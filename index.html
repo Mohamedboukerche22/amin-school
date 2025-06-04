@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدرسة الامين للتعلم السريع </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #2980b9;
+            border-radius: 5px;
+            transform: scale(1.1);
+        }
+
+        .container {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .school-name {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .logo-placeholder {
+            width: 150px;
+            height: 150px;
+            background-color: #ddd;
+            margin: 20px auto;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #666;
+            border: 3px solid #3498db;
+            animation: pulse 2s infinite;
+        }
+
+        .map-container {
+            margin: 30px auto;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .map-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .map-image:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .school-name {
+                font-size: 1.8em;
+            }
+            .logo-placeholder {
+                width: 120px;
+                height: 120px;
+                font-size: 1em;
+            }
+            .nav-links {
+                gap: 15px;
+            }
+            .nav-links a {
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .school-name {
+                font-size: 1.5em;
+            }
+            .logo-placeholder {
+                width: 100px;
+                height: 100px;
+            }
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-links">
+            <a href="#register">تسجيل</a>
+            <a href="#admin">إدارة</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="school-name">مدرسة النور الخاصة</h1>
+        <div class="logo-placeholder">ضع الشعار هنا</div>
+        <div class="map-container">
+            <a href="https://www.google.com/maps?q=25.276987,55.296249" target="_blank">
+                <img src="https://via.placeholder.com/600x400?text=خريطة+المدرسة" alt="خريطة المدرسة" class="map-image">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scroll for navigation links
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    alert('سيتم توجيهك إلى صفحة ' + this.textContent);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
