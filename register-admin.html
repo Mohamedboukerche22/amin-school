@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدرسة النور الخاصة - نظام التسجيل والإدارة</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #4CAF50;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
+            --info-color: #2196F3;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --white: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border-color: #e1e8ed;
+            --shadow-light: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-medium: 0 8px 25px rgba(0,0,0,0.15);
+            --shadow-heavy: 0 15px 35px rgba(0,0,0,0.2);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --gradient-accent: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow-light);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid transparent;
+            border-radius: 50px;
+            background: var(--gradient-primary);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .nav-btn.outline {
+            background: transparent;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-btn.outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s ease;
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-heavy);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #45a049);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--error-color), #d32f2f);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info-color), #1976d2);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Message Styles */
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            animation: slideInRight 0.5s ease;
+        }
+
+        .message-success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message-error {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message-info {
+            background: linear-gradient(135deg, #cce7ff, #b8daff);
+            color: #004085;
+            border: 1px solid #b8daff;
+        }
+
+        /* Student Card */
+        .student-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-light);
+            border-right: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .student-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .student-level {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .student-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: var(--light-color);
+            border-radius: 8px;
+        }
+
+        .info-icon {
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        /* News Item */
+        .news-item {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-light);
+            border-right: 4px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .news-item:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .news-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .news-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .news-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .admin-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.5rem;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: transparent;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .admin-controls {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title h1 {
+                font-size: 1.5rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .news-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <i class="fas fa-school"></i>
+                <span>مدرسة النور الخاصة</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#register" class="nav-btn">تسجيل طالب جديد</a></li>
+                <li><a href="#admin" class="nav-btn outline">لوحة الإدارة</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>نظام إدارة المدرسة</h1>
+            <p>منصة شاملة لإدارة الطلاب والأخبار المدرسية</p>
+        </div>
+
+        <div class="container">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('register')">
+                    <i class="fas fa-user-plus"></i> تسجيل الطلاب
+                </button>
+                <button class="tab" onclick="switchTab('admin')">
+                    <i class="fas fa-cogs"></i> لوحة الإدارة
+                </button>
+            </div>
+
+            <!-- Registration Tab -->
+            <div id="register" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h2 class="card-title">تسجيل طالب جديد</h2>
+                    </div>
+
+                    <form id="registrationForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <input type="text" class="form-input" placeholder="الاسم الأول" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-input" placeholder="اسم العائلة" required>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-select" required>
+                                    <option value="" disabled selected>اختر المادة</option>
+                                    <option value="رياضيات">رياضيات</option>
+                                    <option value="علوم">علوم</option>
+                                    <option value="لغة عربية">لغة عربية</option>
+                                    <option value="لغة إنجليزية">لغة إنجليزية</option>
+                                    <option value="فيزياء">فيزياء</option>
+                                    <option value="كيمياء">كيمياء</option>
+                                    <option value="تاريخ">تاريخ</option>
+                                    <option value="جغرافيا">جغرافيا</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" class="form-input" placeholder="رقم الهاتف" required>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-select" required>
+                                    <option value="" disabled selected>المستوى الدراسي</option>
+                                    <option value="1">الصف الأول</option>
+                                    <option value="2">الصف الثاني</option>
+                                    <option value="3">الصف الثالث</option>
+                                    <option value="4">الصف الرابع</option>
+                                    <option value="5">الصف الخامس</option>
+                                    <option value="6">الصف السادس</option>
+                                    <option value="7">الصف السابع</option>
+                                    <option value="8">الصف الثامن</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-input" placeholder="البريد الإلكتروني (اختياري)">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i>
+                            تسجيل الطالب
+                        </button>
+                    </form>
+
+                    <div id="registrationMessage"></div>
+                </div>
+            </div>
+
+            <!-- Admin Tab -->
+            <div id="admin" class="tab-content">
+                <!-- Admin Login -->
+                <div class="card" id="adminLogin">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h2 class="card-title">تسجيل دخول الإدارة</h2>
+                    </div>
+
+                    <form id="adminLoginForm">
+                        <div class="form-group">
+                            <input type="password" class="form-input" placeholder="كلمة المرور" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            دخول
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Admin Dashboard -->
+                <div id="adminDashboard" style="display: none;">
+                    <!-- Statistics -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-number" id="totalStudents">24</div>
+                            <div class="stat-label">إجمالي الطلاب</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <div class="stat-number" id="totalNews">8</div>
+                            <div class="stat-label">الأخبار المنشورة</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">المواد الدراسية</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-number">95%</div>
+                            <div class="stat-label">نسبة الحضور</div>
+                        </div>
+                    </div>
+
+                    <!-- Students Management -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h2 class="card-title">إدارة الطلاب المسجلين</h2>
+                        </div>
+
+                        <div id="studentsList">
+                            <!-- Sample Students -->
+                            <div class="student-card">
+                                <div class="student-header">
+                                    <div class="student-name">أحمد محمد العلي</div>
+                                    <div class="student-level">الصف الخامس</div>
+                                </div>
+                                <div class="student-info">
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-book"></i>
+                                        <span>رياضيات</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-phone"></i>
+                                        <span>+213 555 123 456</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-calendar"></i>
+                                        <span>تاريخ التسجيل: 2025-06-01</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="student-card">
+                                <div class="student-header">
+                                    <div class="student-name">فاطمة سعد الدين</div>
+                                    <div class="student-level">الصف الثالث</div>
+                                </div>
+                                <div class="student-info">
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-book"></i>
+                                        <span>لغة عربية</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-phone"></i>
+                                        <span>+213 555 789 012</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-calendar"></i>
+                                        <span>تاريخ التسجيل: 2025-05-28</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="student-card">
+                                <div class="student-header">
+                                    <div class="student-name">عمر خالد الحسن</div>
+                                    <div class="student-level">الصف السابع</div>
+                                </div>
+                                <div class="student-info">
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-book"></i>
+                                        <span>علوم</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-phone"></i>
+                                        <span>+213 555 345 678</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <i class="info-icon fas fa-calendar"></i>
+                                        <span>تاريخ التسجيل: 2025-05-25</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Management -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <h2 class="card-title">إدارة الأخبار</h2>
+                        </div>
+
+                        <!-- Add News Form -->
+                        <form id="newsForm">
+                            <div class="form-group">
+                                <input type="text" class="form-input" placeholder="عنوان الخبر" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-textarea" placeholder="محتوى الخبر" required></textarea>
+                            </div>
