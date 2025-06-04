@@ -158,6 +158,64 @@
             </a>
         </div>
     </div>
+    <div class="news-section">
+            <h2>أخبار المدرسة</h2>
+            <?php
+                // Simulated admin check (in real app, use secure session or login system)
+                $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
+
+                // Connect to a simple database (e.g., SQLite or MySQL)
+                try {
+                    $db = new PDO('sqlite:school_news.db');
+                    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                    // Create news table if it doesn't exist
+                    $db->exec("CREATE TABLE IF NOT EXISTS news (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        title TEXT NOT NULL,
+                        content TEXT NOT NULL,
+                        date TEXT NOT NULL
+                    )");
+
+                    // Handle news submission
+                    if ($isAdmin && isset($_POST['submit_news'])) {
+                        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+                        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+                        $date = date('Y-m-d H:i:s');
+                        if ($title && $content) {
+                            $stmt = $db->prepare("INSERT INTO news (title, content, date) VALUES (?, ?, ?)");
+                            $stmt->execute([$title, $content, $date]);
+                        }
+                    }
+
+                    // Handle news deletion
+                    if ($isAdmin && isset($_POST['delete_news'])) {
+                        $id = filter_input(INPUT_POST, 'news_id', FILTER_SANITIZE_NUMBER_INT);
+                        $stmt = $db->prepare("DELETE FROM news WHERE id = ?");
+                        $stmt->execute([$id]);
+                    }
+
+                    // Fetch and display news
+                    $result = $db->query("SELECT * FROM news ORDER BY date DESC");
+                    foreach ($result as $row) {
+                        echo '<div class="news-item">';
+                        echo '<h3>' . htmlspecialchars($row['title']) . '</h3>';
+                        echo '<p>' . htmlspecialchars($row['content']) . '</p>';
+                        echo '<p><small>تاريخ: ' . htmlspecialchars($row['date']) . '</small></p>';
+                        if ($isAdmin) {
+                            echo '<div class="admin-controls">';
+                            echo '<form method="POST" style="display:inline;">';
+                            echo '<input type="hidden" name="news_id" value="' . $row['id'] . '">';
+                            echo '<button type="submit" name="delete_news">حذف</button>';
+                            echo '</form>';
+                            echo '</div>';
+                        }
+                        echo '</div>';
+                    }
+                } catch (PDOException $e) {
+                    echo '<p>خطأ: ' . htmlspecialchars($e->getMessage()) . '</p>';
+                }
+            ?>
 
     <script>
         // Add smooth scroll for navigation links
